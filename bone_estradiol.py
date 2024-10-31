@@ -56,7 +56,7 @@ def feval(funcName, *args):
 
 # Define the function that contains the equations of the system to be evaluated.
 
-def bonerepair(y,t):
+def bonerepair(y,t,E2_max):
     # Parameters of the system of ten equations described above:
 
     ke_1 = 3.0
@@ -98,7 +98,7 @@ def bonerepair(y,t):
     kpb = 0.2202
     apb = 10.0
     ae2 = 0.5 #estimado - artigo
-    E2max = 0.019 # artigo
+    E2max = E2_max#0.019 # artigo
     de2 = 0.03  #artigo
 
 
@@ -190,108 +190,23 @@ Cm = 1000.0 #condicoes normais
 Cb = 0.0 #1.8*10**6
 Mc = 0.0
 Mb = 0.0
-E2 = 0.019
+E2 = 0.060
 
 
 yinit = np.array([D, Mo, M1, M2, C1, C2, Cm, Cb, Mc, Mb, E2])
 
-
-
-"""Call odeint, passing the function name as a parameter, along with the initial conditions and the time step, to obtain the result."""
-
-ys = odeint(bonerepair, yinit, t)
-
-"""Prepare the results for visualization by separating each variable into its own vector."""
+# E2_max no valor maximo primeiro
+ys = odeint(bonerepair, yinit, t, args=(E2,))
 
 #D, Mo, M1, M2, C1, C2, Cm, Cb, Mc, Mb, E2
-
-ys1 = ys[:,0]
-ys2 = ys[:,1]
-ys3 = ys[:,2]
-ys4 = ys[:,3]
-ys5 = ys[:,4]
-ys6 = ys[:,5]
-ys7 = ys[:,6]
-ys8 = ys[:,7]
-ys9 = ys[:,8]
-ys10 = ys[:,9]
-ys11 = ys[:,10]
-
-ys60 = ys11 # estradiol E2 = 0.06
-ys60osso = ys10
-ys60cart = ys9
-ys60c2 = ys6
-
-"""Let's see two ways to display the results. We can plot all variables on the same graph as shown below:"""
-
 # salva figuras
 pp.plots(t,days,ys)
 
-ys = odeint(bonerepair, yinit, t)
+#Atualiza condicao inicial do E2 para rodar a segunda vez
+E2 = 0.019
+yinit = np.array([D, Mo, M1, M2, C1, C2, Cm, Cb, Mc, Mb, E2])
 
-ys19 = ys[:,10] # estradiol E2 = 0.019
-ys19osso = ys[:,9]
-ys19cart = ys[:,8]
-ys19c2 = ys[:,5]
+# E2_max com o valor minimo na segunda chamada
+ys_min = odeint(bonerepair, yinit, t, args=(E2,))
 
-#ys60 = ys11
-#ys60osso = ys10
-#ys60cart = ys9
-#ys60c2 = ys6
-
-fig, ax = plt.subplots(figsize=(5, 4), tight_layout=True)
-ax.plot(t, ys19, 'k', t, ys60, 'g')
-#ax.xlim(0,days)
-ax.legend(('E2 = 0.019', 'E2 = 0.060'), fontsize=14) #trocar
-ax.set_title('Estradiol', fontsize=14)
-ax.set_xlabel('Tempo (dias)', fontsize=14)
-ax.set_ylabel('Concentraçao', fontsize=14)
-ax.set_xlim(0,days)
-plt.grid(True)
-
-
-plt.tight_layout()
-
-#ys19osso = ys10
-
-fig, ax = plt.subplots(figsize=(5, 4), tight_layout=True)
-ax.plot(t, ys19osso, 'k', t, ys60osso, 'g')
-ax.legend(('E2 = 0.019', 'E2 = 0.060'), fontsize=14) #trocar
-ax.set_title('Osso', fontsize=14)
-ax.set_xlabel('Tempo (dias)', fontsize=14)
-ax.set_ylabel('Concentraçao', fontsize=14)
-ax.set_xlim(0,days)
-
-plt.grid(True)
-
-
-plt.tight_layout()
-
-#ys19c2 = ys6
-
-fig, ax = plt.subplots(figsize=(5, 4), tight_layout=True)
-ax.plot(t, ys19c2, 'k', t, ys60c2, 'g')
-ax.legend(('E2 = 0.019', 'E2 = 0.060'), fontsize=14) #trocar
-ax.set_title('IL-10', fontsize=14)
-ax.set_xlabel('Tempo (dias)', fontsize=14)
-ax.set_ylabel('Concentraçao', fontsize=14)
-ax.set_xlim(0,days)
-plt.grid(True)
-
-
-plt.tight_layout()
-
-#ys19osso = ys10
-
-fig, ax = plt.subplots(figsize=(5, 4), tight_layout=True)
-ax.plot(t, ys19cart, 'k', t, ys60cart, 'g')
-ax.legend(('E2 = 0.019', 'E2 = 0.060'), fontsize=14) #trocar
-ax.set_title('Cartilagem', fontsize=14)
-ax.set_xlabel('Tempo (dias)', fontsize=14)
-ax.set_ylabel('Concentraçao', fontsize=14)
-ax.set_xlim(0,days)
-plt.grid(True)
-
-plt.savefig('Cartilagem_E2.png')
-
-plt.tight_layout()
+pp.plots_estradiol(t,days,ys, ys_min)

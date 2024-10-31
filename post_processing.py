@@ -13,7 +13,6 @@ def plots(t,days,ys):
     ys8 = ys[:,7]
     ys9 = ys[:,8]
     ys10 = ys[:,9]
-    ys11 = ys[:,10]
     
     plt.figure()
 
@@ -105,3 +104,71 @@ def plots(t,days,ys):
     # Display the figure.
     plt.savefig('osso.png')
     plt.show()
+    
+    
+def plots_estradiol(t,days,ys, ys_min):
+    # desacopla os resultados
+    ys60 = ys[:,10] # estradiol E2 = 0.06
+    ys60osso = ys[:,9]
+    ys60cart = ys[:,8]
+    ys60c2 = ys[:,5]
+
+    ys19 = ys_min[:,10] # estradiol E2 = 0.019
+    ys19osso = ys_min[:,9]
+    ys19cart = ys_min[:,8]
+    ys19c2 = ys_min[:,5]
+
+    fig, ax = plt.subplots(figsize=(5, 4), tight_layout=True)
+    ax.plot(t, ys19, 'k', t, ys60, 'g')
+    #ax.xlim(0,days)
+    ax.legend(('E2 = 0.019', 'E2 = 0.060'), fontsize=14) #trocar
+    ax.set_title('Estradiol', fontsize=14)
+    ax.set_xlabel('Tempo (dias)', fontsize=14)
+    ax.set_ylabel('Concentraçao', fontsize=14)
+    ax.set_xlim(0,days)
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig('E2.png')
+
+    #ys19osso = ys10
+
+    fig, ax = plt.subplots(figsize=(5, 4), tight_layout=True)
+    ax.plot(t, ys19osso, 'k', t, ys60osso, 'g')
+    ax.legend(('E2 = 0.019', 'E2 = 0.060'), fontsize=14) #trocar
+    ax.set_title('Osso', fontsize=14)
+    ax.set_xlabel('Tempo (dias)', fontsize=14)
+    ax.set_ylabel('Concentraçao', fontsize=14)
+    ax.set_xlim(0,days)
+
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig('Osso_E2.png')
+    #ys19c2 = ys6
+
+    fig, ax = plt.subplots(figsize=(5, 4), tight_layout=True)
+    ax.plot(t, ys19c2, 'k', t, ys60c2, 'g')
+    ax.legend(('E2 = 0.019', 'E2 = 0.060'), fontsize=14) #trocar
+    ax.set_title('IL-10', fontsize=14)
+    ax.set_xlabel('Tempo (dias)', fontsize=14)
+    ax.set_ylabel('Concentraçao', fontsize=14)
+    ax.set_xlim(0,days)
+    plt.grid(True)
+
+    plt.tight_layout()
+    plt.savefig('IL-10_E2.png')
+
+    #ys19osso = ys10
+
+    fig, ax = plt.subplots(figsize=(5, 4), tight_layout=True)
+    ax.plot(t, ys19cart, 'k', t, ys60cart, 'g')
+    ax.legend(('E2 = 0.019', 'E2 = 0.060'), fontsize=14) #trocar
+    ax.set_title('Cartilagem', fontsize=14)
+    ax.set_xlabel('Tempo (dias)', fontsize=14)
+    ax.set_ylabel('Concentraçao', fontsize=14)
+    ax.set_xlim(0,days)
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig('Cartilagem_E2.png')
+
+
+
