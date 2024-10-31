@@ -43,6 +43,7 @@ First, we will import the Python libraries that we'll use: matplotlib for displa
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.integrate import odeint,solve_ivp
+import post_processing as pp
 
 # Define a function feval that takes the name of the equation to be evaluated as a string and returns the corresponding equation function.
 def feval(funcName, *args):
@@ -223,101 +224,8 @@ ys60c2 = ys6
 
 """Let's see two ways to display the results. We can plot all variables on the same graph as shown below:"""
 
-
-
-plt.figure()
-
-# Debris
-plt.subplot(221)
-plt.plot(t, ys1, 'r')
-plt.legend(["D"])
-plt.xlim(0,days)
-plt.title('Detritos')
-plt.grid(True)
-
-# Macrophagos
-plt.subplot(222)
-plt.plot(t, ys2, '--k', t,ys3, 'b', t,ys4, 'g')
-plt.legend(["M0", "M1", "M2"])
-plt.xlim(0,days)
-plt.title('Macrófagos')
-plt.grid(True)
-
-# TNF
-plt.subplot(223)
-plt.plot(t, ys5, 'g')
-plt.legend(["c1"])
-plt.xlim(0,days)
-plt.title('Citocinas pró-inflamatórias')
-plt.grid(True)
-
-# IL10
-plt.subplot(224)
-plt.plot(t, ys6, 'c')
-plt.legend(["c2"])
-plt.xlim(0,days)
-plt.title('Citocinas anti-inflamatórias')
-plt.grid(True)
-
-plt.tight_layout()
-
-# exibe a figura
-plt.show()
-
-print(ys1)
-
-plt.figure()
-
-# Mesenchymal stem cells
-
-plt.subplot(231)
-plt.plot(t, ys7, 'b')
-plt.xlim(0,days)
-plt.legend(["Cm"])
-plt.title('Células-tronco mesenquimais')
-plt.grid(True)
-
-# Osteoblasts
-plt.subplot(232)
-plt.plot(t, ys8, 'y')
-plt.legend(["Cb"])
-plt.xlim(0,days)
-plt.title('Osteoblastos')
-plt.grid(True)
-
-# cartilage
-plt.subplot(233)
-plt.plot(t, ys9, 'g')
-plt.xlim(0,days)
-plt.legend(["Mc"])
-plt.title('Cartilagem')
-plt.grid(True)
-
-# bone
-plt.subplot(234)
-plt.plot(t, ys10, 'r')
-plt.xlim(0,days)
-plt.legend(["Mb"])
-plt.title('Osso')
-plt.grid(True)
-
-
-#Estradiol sérico
-
-#plt.subplot(235)
-#plt.plot(t, ys11, 'k')
-#plt.xlim(0,days)
-#plt.legend(["E2"])
-#plt.title('Estradiol')
-#plt.grid(True)
-
-
-plt.tight_layout()
-
-
-
-# Display the figure.
-plt.show()
+# salva figuras
+pp.plots(t,days,ys)
 
 ys = odeint(bonerepair, yinit, t)
 
@@ -384,5 +292,6 @@ ax.set_ylabel('Concentraçao', fontsize=14)
 ax.set_xlim(0,days)
 plt.grid(True)
 
+plt.savefig('Cartilagem_E2.png')
 
 plt.tight_layout()
